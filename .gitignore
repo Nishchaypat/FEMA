@@ -3,3 +3,4 @@
 /processed_data.csv
 /tokenized_data.csv
 /data_tokenized_nonstemmed.csv
+/embedding_target.csv
