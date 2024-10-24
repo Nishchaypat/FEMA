@@ -1,3 +1,5 @@
 /data.csv
 /__pycache__/
 /processed_data.csv
+/tokenized_data.csv
+/data_tokenized_nonstemmed.csv
