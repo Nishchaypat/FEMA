@@ -5,3 +5,5 @@
 /data_tokenized_nonstemmed.csv
 /embedding_target.csv
 /hyperband_dir/
+/Test_79/
+*.csv
