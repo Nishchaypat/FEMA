@@ -4,3 +4,4 @@
 /tokenized_data.csv
 /data_tokenized_nonstemmed.csv
 /embedding_target.csv
+/hyperband_dir/
