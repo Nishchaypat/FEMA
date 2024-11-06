@@ -7,7 +7,6 @@
 /hyperband_dir/
 /Test_79/
 *.csv
-*/*/
 /Best_82/
 /a2_glove.6B.100d.txt
 /best_lstm_model.h5
