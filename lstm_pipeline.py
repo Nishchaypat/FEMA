@@ -41,27 +41,37 @@ def predict_sentiment(model, text):
     
     # Return the prediction as a label
     if prediction >= 0.5:
-        return [prediction,"Positive"]
+        return [prediction[0][0], "Positive"]
     else:
-        return [prediction,"Negative"]
+        return [prediction[0][0], "Negative"]
 
 # Main function for model inference
-def main(input_text: str, model_path: str = 'best_lstm_model.h5'):
+def main(input_data):
     """
     Main function to process input text, load the model, and make predictions.
     """
-    # Load the trained model
+    # Extract the input text from the WML payload (input_data is a list with the text field)
+    input_text = input_data['values'][0][0]  # Assuming input_data is a dictionary with 'values' key containing the text data
+    
+    # Load the trained model (you can replace the model_path with the actual path in the WML environment)
+    model_path = "best_lstm_model.h5"  # Path to the model on WML or local path
     model = load_model_from_wml(model_path)
     
     # Predict sentiment for the input text
     result = predict_sentiment(model, input_text)
     
-    # Return the result
-    return result
+    # Return the result in the format expected by WML
+    return {
+        "predictions": [
+            {
+                "label": result[1],  # Sentiment label (Positive or Negative)
+                "score": result[0]   # Prediction score
+            }
+        ]
+    }
 
-# Example usage
+# Example usage (only for testing locally)
 if __name__ == "__main__":
-    input_text = "This is a great product!"
-    model_path = "best_lstm_model.h5"  # Path to the uploaded model on IBM Cloud
-    result = main(input_text, model_path)
+    input_data = {"values": [["This is a great product!"]]}  # Example input in WML format
+    result = main(input_data)
     print(f"Predicted Sentiment: {result}")
