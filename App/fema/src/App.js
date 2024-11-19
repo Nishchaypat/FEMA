@@ -72,97 +72,80 @@ const SentimentAnalyzer = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('analyze');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
-  const analyzeSentiment = async () => {
-    try {
-      // Simulated API call
-      const result = {
-        score: 0.8,
-        reason: "Positive language and tone",
-        keywords: ["great", "excellent", "amazing"],
-        emotions: {
-          joy: 0.8,
-          sadness: 0.1,
-          anger: 0.05,
-          fear: 0.05
-        }
-      };
-      setSentiment(result);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+  const [sentimentScore, setSentimentScore] = useState(null); // Add state for the score
+  const [isLoading, setIsLoading] = useState(false); // State for loading spinners  
 
   const theme = themes[currentTheme];
 
+  const handleTextChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true); // Start loading spinner
+    try {
+      const response = await fetch('http://127.0.0.1:5000/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: text }),
+      });
+  
+      const data = await response.json();
+      setSentiment(data.sentiment); // Update sentiment state with API result
+      setSentimentScore(data.score); // Update sentiment score
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setIsLoading(false); // Stop loading spinner
+    }
+  };
+  
   const renderAnalyzeTab = () => (
     <div className="space-y-6">
       <div className="space-y-2">
-        <label className={`block text-sm font-medium ${theme.text}`}>
-          Enter your text
-        </label>
+        <label className={`block text-sm font-medium ${theme.text}`}>Enter your text</label>
         <textarea
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={handleTextChange}
           placeholder="Type or paste your text here..."
-          className={`w-full h-48 p-4 rounded-lg border ${theme.input} 
-            ${theme.text} text-base transition-all duration-200
-            placeholder:text-gray-400 focus:outline-none focus:ring-2 
-            ${theme.highlight} focus:border-transparent resize-none`}
+          className={`w-full h-48 p-4 rounded-lg border ${theme.input} ${theme.text} text-base transition-all duration-200 placeholder:text-gray-400 focus:outline-none focus:ring-2 ${theme.highlight} focus:border-transparent resize-none`}
         />
       </div>
       
       <button 
-        onClick={analyzeSentiment}
-        className={`w-full py-3 rounded-lg ${theme.primary} text-white 
-          transition-all duration-200 font-medium shadow-sm
-          focus:outline-none focus:ring-2 ${theme.highlight} focus:ring-offset-2`}
+        onClick={handleSubmit}
+        className={`w-full py-3 rounded-lg ${theme.primary} text-white transition-all duration-200 font-medium shadow-sm focus:outline-none focus:ring-2 ${theme.highlight} focus:ring-offset-2`}
       >
         Analyze Sentiment
       </button>
-
-      {sentiment && (
+  
+      {/* Loading Spinner */}
+      {isLoading && (
+        <div className="flex justify-center items-center mt-6">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+  
+      {/* Sentiment Results */}
+      {sentiment && !isLoading && (
         <div className={`mt-6 rounded-lg border ${theme.border} overflow-hidden`}>
           <div className={`px-6 py-4 ${theme.secondaryBg} border-b ${theme.border}`}>
             <h3 className={`text-lg font-medium ${theme.text}`}>Analysis Results</h3>
           </div>
           <div className="p-6 space-y-4">
             <div className="flex justify-between items-center">
-              <span className={`font-medium ${theme.text}`}>Sentiment Score</span>
+              <span className={`font-medium ${theme.text}`}>Sentiment</span>
               <span className={`${theme.text} bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium`}>
-                {sentiment.score}
+                {sentiment}
               </span>
             </div>
-            <div className={`${theme.text}`}>
-              <span className="font-medium">Key Reason: </span>
-              <span>{sentiment.reason}</span>
-            </div>
-            <div className="mt-4">
-              <h4 className={`font-medium ${theme.text} mb-2`}>Keywords</h4>
-              <div className="flex flex-wrap gap-2">
-                {sentiment.keywords.map((keyword, index) => (
-                  <span key={index} className="px-3 py-1 bg-gray-100 rounded-full text-sm">
-                    {keyword}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="mt-4">
-              <h4 className={`font-medium ${theme.text} mb-2`}>Emotional Distribution</h4>
-              <div className="space-y-2">
-                {Object.entries(sentiment.emotions).map(([emotion, value]) => (
-                  <div key={emotion} className="flex items-center gap-2">
-                    <span className="w-20 text-sm capitalize">{emotion}</span>
-                    <div className="flex-1 h-2 bg-gray-200 rounded">
-                      <div 
-                        className="h-full bg-blue-500 rounded"
-                        style={{ width: `${value * 100}%` }}
-                      />
-                    </div>
-                    <span className="text-sm">{(value * 100).toFixed(0)}%</span>
-                  </div>
-                ))}
-              </div>
+            <div className="flex justify-between items-center mt-4">
+              <span className={`font-medium ${theme.text}`}>Sentiment Score</span>
+              <span className={`${theme.text} bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium`}>
+                {sentimentScore}
+              </span>
             </div>
           </div>
         </div>
