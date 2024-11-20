@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
 import { 
-  PanelRightOpen, 
-  PanelRightClose, 
   Home, 
   Info, 
   Settings,
-  Save,
-  Trash2,
-  Download,
-  Share2,
-  HelpCircle,
   Palette,
   X
 } from 'lucide-react';
@@ -69,7 +62,6 @@ const SentimentAnalyzer = () => {
   const [text, setText] = useState('');
   const [sentiment, setSentiment] = useState(null);
   const [currentTheme, setCurrentTheme] = useState('light');
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('analyze');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [sentimentScore, setSentimentScore] = useState(null); // Add state for the score
@@ -256,7 +248,7 @@ const SentimentAnalyzer = () => {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
               <span className={`text-xl font-semibold ${theme.text}`}>
-                Sentiment Analyzer
+                FEMA Sentiment Analyzer
               </span>
             </div>
           </div>
@@ -290,11 +282,6 @@ const SentimentAnalyzer = () => {
           >
             <Settings size={20} />
           </button>
-          <button
-            className="p-3 rounded-lg text-gray-500 hover:bg-gray-100 transition-all duration-200"
-          >
-            <HelpCircle size={20} />
-          </button>
         </div>
       </div>
 
@@ -308,84 +295,8 @@ const SentimentAnalyzer = () => {
           </div>
         </div>
       </div>
-
-      {/* Settings Modal */}
       {renderSettings()}
-
-      {/* Drawer Toggle */}
-      <button 
-        onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-        className={`fixed right-4 top-1/2 -translate-y-1/2 p-3 rounded-lg 
-          ${theme.primary} text-white shadow-lg transition-all duration-200
-          focus:outline-none focus:ring-2 ${theme.highlight} focus:ring-offset-2`}
-      >
-        {isDrawerOpen ? <PanelRightClose size={24} /> : <PanelRightOpen size={24} />}
-      </button>
-
-      {/* Analysis Drawer */}
-      <div 
-        className={`fixed right-0 top-16 h-[calc(100%-4rem)] w-80 ${theme.card} shadow-2xl 
-          transform transition-transform duration-300 ease-in-out border-l ${theme.border}
-          ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}
-      >
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className={`text-lg font-semibold ${theme.text}`}>Analysis Graphs</h3>
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  // Add download logic here
-                  const graphData = {
-                    graph1: "Graph 1 data",
-                    graph2: "Graph 2 data"
-                  };
-                  const blob = new Blob([JSON.stringify(graphData, null, 2)], { type: 'application/json' });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = 'sentiment-analysis-graphs.json';
-                  document.body.appendChild(a);
-                  a.click();
-                  document.body.removeChild(a);
-                  URL.revokeObjectURL(url);
-                }}
-                className={`p-2 rounded-lg hover:${theme.secondaryBg} ${theme.text}`}
-              >
-                <Download size={20} />
-              </button>
-              <button
-                onClick={() => {
-                  // Add save logic here
-                  localStorage.setItem('savedGraphs', JSON.stringify({
-                    timestamp: new Date().toISOString(),
-                    graph1: "Graph 1 data",
-                    graph2: "Graph 2 data"
-                  }));
-                }}
-                className={`p-2 rounded-lg hover:${theme.secondaryBg} ${theme.text}`}
-              >
-                <Save size={20} />
-              </button>
-              <button
-                onClick={() => setIsDrawerOpen(false)}
-                className={`p-2 rounded-lg hover:${theme.secondaryBg} ${theme.text}`}
-              >
-                <X size={20} />
-              </button>
-            </div>
-          </div>
-          <div className="space-y-6">
-            <div className={`h-48 ${theme.secondaryBg} rounded-lg shadow-sm 
-              flex items-center justify-center ${theme.text}`}>
-              Graph 1
-            </div>
-            <div className={`h-48 ${theme.secondaryBg} rounded-lg shadow-sm 
-              flex items-center justify-center ${theme.text}`}>
-              Graph 2
-            </div>
-          </div>
-        </div>
-      </div>
+      
     </div>
   );
 };
