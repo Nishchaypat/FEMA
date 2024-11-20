@@ -6,7 +6,7 @@ import tensorflow_text  # Ensure TensorFlow Text is imported as it's needed by t
 from flask_cors import CORS
 
 class FastBertPredictor:
-    def __init__(self, model_path=r'C:\Users\admin-npatel237\FEMA\Best_82'):
+    def __init__(self, model_path=r'/Users/npatel237/Library/CloudStorage/OneDrive-GeorgiaStateUniversity/FEMA/Best_82'):
         # Load the model once during initialization (this happens once when the app starts)
         print("Loading the model...")
         self.model = tf.keras.models.load_model(
@@ -71,4 +71,4 @@ def predict():
 
 # Run the Flask app
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=5000)  # Run on port 5000
+    app.run(debug=False, host='0.0.0.0', port=8000)  # Run on port 5000
