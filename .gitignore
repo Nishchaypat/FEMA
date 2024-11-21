@@ -8,8 +8,8 @@
 /Test_79/
 *.csv
 /Best_82/
-/a2_glove.6B.100d.txt
-/best_lstm_model.h5
+data-files/a2_glove.6B.100d.txt
+LSTM/best_lstm_model.h5
 /my_dir_2/
 /my_dir/
 /bert_sentiment_model/
