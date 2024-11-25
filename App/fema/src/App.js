@@ -252,12 +252,6 @@ const SentimentAnalyzer = () => {
             </div>
           )}
 
-          {radarChartData && (
-            <div className={`p-4 ${theme.card} rounded-lg`}>
-              <h3 className={`text-lg font-medium ${theme.text} mb-4`}>Sentiment Radar</h3>
-              <Radar data={radarChartData} options={chartOptions} />
-            </div>
-          )}
         </div>
       </div>
     </div>
