@@ -2,73 +2,97 @@ from flask import Flask, request, jsonify
 import numpy as np
 import tensorflow as tf
 import tensorflow_hub as hub
-import tensorflow_text  # Ensure TensorFlow Text is imported as it's needed by the model
+import tensorflow_text  # Required for BERT
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+import pickle
 from flask_cors import CORS
 
+# Load BERT model class
 class FastBertPredictor:
     def __init__(self, model_path=r'/Users/npatel237/Library/CloudStorage/OneDrive-GeorgiaStateUniversity/FEMA/Best_82'):
-        # Load the model once during initialization (this happens once when the app starts)
-        print("Loading the model...")
+        print("Loading BERT model...")
         self.model = tf.keras.models.load_model(
             model_path,
             custom_objects={'KerasLayer': hub.KerasLayer}
         )
-        # Compile the model
         self.model.compile(
             optimizer='adam',
             loss='binary_crossentropy',
             metrics=['accuracy']
         )
-        print("Model loaded successfully.")
+        print("BERT model loaded successfully.")
 
     def predict(self, text):
-        # Convert input to array if it's a single string
         if isinstance(text, str):
             text = np.array([text])
         elif isinstance(text, list):
             text = np.array(text)
-            
-        # Make prediction (don't recompile, just use the already compiled model)
-        prediction = self.model.predict(text, verbose=0)  # Set verbose=0 to suppress output
+        prediction = self.model.predict(text, verbose=0)
         return prediction
 
-# Initialize predictor once globally (it will persist as long as the app is running)
-predictor = FastBertPredictor()
+# Initialize BERT predictor
+bert_predictor = FastBertPredictor()
+
+# Load LSTM components
+print("Loading LSTM components...")
+lstm_model = load_model('../LSTM/best_lstm_model.h5')
+with open('../word_tokenizer_lstm.pkl', 'rb') as handle:
+    lstm_tokenizer = pickle.load(handle)
+embedding_matrix = np.load('../embedding_matrix_lstm.npy')
+max_sequence_length = embedding_matrix.shape[1]
+print("LSTM components loaded successfully.")
+
+def quick_bert_predict(text):
+    prediction = bert_predictor.predict(text)
+    if prediction[0] <= 0.35:
+        result = "Negative"
+    elif prediction[0] > 0.35 and prediction[0] <=0.65:
+        result = "Neutral"
+    else:
+        result = "Positive"
+    return [prediction, result]
+
+def quick_lstm_predict(text):
+    sequence = lstm_tokenizer.texts_to_sequences([text])
+    padded_sequence = pad_sequences(sequence, padding='post', maxlen=max_sequence_length)
+    prediction = lstm_model.predict(padded_sequence, verbose=0)
+    if prediction[0] <= 0.35:
+        result = "Negative"
+    elif prediction[0] > 0.35 and prediction[0] <=0.65:
+        result = "Neutral"
+    else:
+        result = "Positive"
+    return [prediction, result]
 
 # Flask App setup
 app = Flask(__name__)
 CORS(app)
 
-# Function to get prediction
-def quick_predict(text):
-    """
-    Fast prediction for a single text
-    """
-    prediction = predictor.predict(text)
-    print(prediction)
-    result = "positive" if prediction[0] >= 0.5 else "negative"
-    return [prediction, result]
-
-# Define API endpoint for sentiment prediction
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Get data from POST request
     data = request.get_json()
-    
-    # Check if 'text' key is in the request JSON
     if 'text' not in data:
         return jsonify({"error": "Text is required"}), 400
     
     text = data['text']
     
-    final_result = quick_predict(text)
+    # Get predictions from both models
+    bert_result = quick_bert_predict(text)
+    lstm_result = quick_lstm_predict(text)
+    
+    # Serialize the scores
+    bert_score = bert_result[0].tolist() if isinstance(bert_result[0], np.ndarray) else bert_result[0]
+    lstm_score = lstm_result[0].tolist() if isinstance(lstm_result[0], np.ndarray) else lstm_result[0]
+    print(bert_score, lstm_score)
 
-    # Ensure the score (final_result[0]) is serializable by converting it to a list if it's a NumPy ndarray
-    score = final_result[0].tolist() if isinstance(final_result[0], np.ndarray) else final_result[0]
+    return jsonify({
+        "bert_sentiment": bert_result[1],
+        "bert_score": bert_score,
+        "lstm_sentiment": lstm_result[1],
+        "lstm_score": lstm_score
+    })
 
-    # Return prediction as JSON response
-    return jsonify({"sentiment": final_result[1], "score": score})
-
-# Run the Flask app
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=8000)  # Run on port 5000
+    app.run(debug=False, host='0.0.0.0', port=8000)
