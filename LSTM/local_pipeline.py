@@ -4,15 +4,15 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 # Step 1: Load the embedding matrix (optional if you're not retraining)
-embedding_matrix = np.loadtxt('embedding_matrix_lstm.csv', delimiter=',')
+embedding_matrix = np.loadtxt('../embedding_matrix_lstm.npy', delimiter=',')
 
 # Step 2: Load the trained model
-model = load_model('model.h5')
+model = load_model('best_lstm_model.h5')
 
 # Step 3: Recreate or load the tokenizer (use the same tokenizer as during training)
 # If saved as a pickle file:
 import pickle
-with open('tokenizer.pkl', 'rb') as handle:
+with open('../word_tokenizer_lstm.pkl', 'rb') as handle:
     tokenizer = pickle.load(handle)
 
 # Step 4: Preprocess the new text
