@@ -187,7 +187,7 @@ const SentimentAnalyzer = () => {
           <h1 className={`text-2xl font-bold ${theme.text}`}>Sentiment Analyzer</h1>
           <button
             onClick={toggleTheme}
-            className={`p-2 rounded-lg ${theme.primary} text-white`}
+            className={`p-2 rounded-lg text-white`}
           >
             {currentTheme === 'light' ? '🌙' : '☀️'}
           </button>
