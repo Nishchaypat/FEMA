@@ -17,3 +17,5 @@ LSTM/best_lstm_model.h5
 /model_package.tar.gz
 /model_package.zip
 /Best_82.tar.gz
+/embedding_matrix_lstm.npy
+/word_tokenizer_lstm.pkl
