@@ -9,8 +9,8 @@
 *.csv
 /Best_82/
 data-files/a2_glove.6B.100d.txt
-LSTM/best_lstm_model.h5
-/my_dir_2/
+best_lstm_model.h5
+/my_dir_*/
 /my_dir/
 /bert_sentiment_model/
 /model_package
@@ -19,3 +19,5 @@ LSTM/best_lstm_model.h5
 /Best_82.tar.gz
 /embedding_matrix_lstm.npy
 /word_tokenizer_lstm.pkl
+/BERT_LSTM
+/a2_glove.6B.100d.txt
