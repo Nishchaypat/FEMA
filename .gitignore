@@ -21,3 +21,4 @@ best_lstm_model.h5
 /word_tokenizer_lstm.pkl
 /BERT_LSTM*
 /a2_glove.6B.100d.txt
+/LSTM_BERT
