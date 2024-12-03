@@ -15,8 +15,3 @@ Below are examples of positive tweets, presented with their respective compariso
 ### Tweet 2
   ![Positive Tweet 2 (Left)](https://github.com/user-attachments/assets/5f00d072-578d-432f-8568-b8c049743bad)  
   ![Positive Tweet 2 (Right)](https://github.com/user-attachments/assets/c009d1c6-db16-4673-be6d-a5fef5003a28)  
-
-## Negative Tweet
-An example of a negative tweet:  
-
-![Negative Tweet](https://github.com/user-attachments/assets/51803fa1-6d79-47db-825a-3e5bc98674b7)
