@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import numpy as np
 import tensorflow as tf
 import tensorflow_hub as hub
-import tensorflow_text  # Required for BERT
+import tensorflow_text  #Required for BERT
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
