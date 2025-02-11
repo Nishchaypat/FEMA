@@ -8,7 +8,6 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 import pickle
 from flask_cors import CORS
-## Model Classes
 
 class FastBertPredictor:
     def __init__(self, model_path=r'/Users/npatel237/Library/CloudStorage/OneDrive-GeorgiaStateUniversity/FEMA/Best_82'):
