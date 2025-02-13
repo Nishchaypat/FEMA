@@ -62,7 +62,7 @@ class LSTM_BertPredictor:
 bert_predictor = FastBertPredictor()
 lstm_bert = LSTM_BertPredictor()
 
-# Load LSTM components
+#Load LSTM components
 print("Loading LSTM components...")
 lstm_model = load_model('../LSTM/best_lstm_model.h5')
 with open('../word_tokenizer_lstm.pkl', 'rb') as handle:
