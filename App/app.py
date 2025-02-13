@@ -117,7 +117,7 @@ def predict():
     
     text = data['text']
     
-    # Get predictions from all models
+    #Get predictions from all models
     bert_result = quick_bert_predict(text)
     lstm_result = quick_lstm_predict(text)
     lstm_bert_result = quick_lstmbert_predict(text)
