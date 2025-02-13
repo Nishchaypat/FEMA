@@ -10,6 +10,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 import pickle
 from flask_cors import CORS
 
+#Applying the Pipeline
 class FastBertPredictor:
     def __init__(self, model_path=r'/Users/npatel237/Library/CloudStorage/OneDrive-GeorgiaStateUniversity/FEMA/Best_82'):
         print("Loading BERT model...")
