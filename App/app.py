@@ -71,7 +71,7 @@ embedding_matrix = np.load('../embedding_matrix_lstm.npy')
 max_sequence_length = embedding_matrix.shape[1]
 print("LSTM components loaded successfully.")
 
-## Prediction Functions
+#Prediction Functions
 
 def quick_bert_predict(text):
     prediction = bert_predictor.predict(text)
