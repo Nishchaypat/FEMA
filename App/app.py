@@ -122,7 +122,7 @@ def predict():
     lstm_result = quick_lstm_predict(text)
     lstm_bert_result = quick_lstmbert_predict(text)
     
-    # Serialize the scores
+    #Serialize the scores
     bert_score = bert_result[0].tolist() if isinstance(bert_result[0], np.ndarray) else bert_result[0]
     lstm_score = lstm_result[0].tolist() if isinstance(lstm_result[0], np.ndarray) else lstm_result[0]
     lstm_bert_score = lstm_bert_result[0].tolist() if isinstance(lstm_bert_result[0], np.ndarray) else lstm_bert_result[0]
