@@ -105,7 +105,7 @@ def quick_lstm_predict(text):
         result = "Positive"
     return [prediction, result]
 
-## Flask Application
+#Flask Application
 app = Flask(__name__)
 CORS(app)
 
