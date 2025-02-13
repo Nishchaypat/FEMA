@@ -56,7 +56,7 @@ class LSTM_BertPredictor:
         prediction = self.model.predict(text, verbose=0)
         return prediction
 
-## Model Initialization
+#Model Initialization
 
 # Initialize BERT predictor
 bert_predictor = FastBertPredictor()
