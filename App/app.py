@@ -36,6 +36,7 @@ class FastBertPredictor:
         return prediction
 
 #Other Pipeline with different model and embedding 
+
 class LSTM_BertPredictor:
     def __init__(self, model_path=r'/Users/npatel237/Library/CloudStorage/OneDrive-GeorgiaStateUniversity/FEMA/LSTM_BERT/model'):
         print("Loading BERT model...")
