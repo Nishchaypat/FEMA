@@ -23,4 +23,4 @@ padded_sequence = pad_sequences(sequence, padding='post', maxlen=max_sequence_le
 
 # Step 5: Make predictions
 prediction = model.predict(padded_sequence)
-print("Prediction:", prediction)
+print("Prediction:", prediction) 
