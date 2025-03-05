@@ -86,4 +86,4 @@ abbreviations = {
     'lmao': 'laughing my a** off',
     'bff': 'best friends forever',
     'csl': 'can’t stop laughing'
-}
+} 
