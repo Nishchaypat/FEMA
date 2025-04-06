@@ -58,7 +58,6 @@ class LSTM_BertPredictor:
         return prediction
 
 #Model Initialization
-
 #Initialize BERT predictor
 
 bert_predictor = FastBertPredictor()
